@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, fireEvent, screen } from '@testing-library/react'
+import { render, fireEvent, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 import { setupServer, getHandlers } from './backend/mock-server'
 import App, { resetStore } from './frontend/components/App'
@@ -160,7 +160,10 @@ describe('Advanced State Sprint Challenge Submission', () => {
       let answerA = screen.queryByText(AFunction, queryOptions)
       fireEvent.click(answerA.querySelector('button'))
       fireEvent.click(submitAnswerBtn())
-      await screen.findByText(WhatIsPromise, queryOptions, waitForOptions)
+      await waitFor(async () => {
+      const nextQuestion = await screen.findByText(WhatIsPromise, queryOptions, waitForOptions);
+      return nextQuestion !== null;
+      });
     })
     test(`[8] Selecting and submitting a correct answer:
         - Puts the proper success message at the top of the page, Review how to make axios requests and dispatch appropriate actions.

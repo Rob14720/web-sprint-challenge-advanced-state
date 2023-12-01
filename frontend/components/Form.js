@@ -1,26 +1,67 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import * as actionCreators from '../state/action-creators'
+import React from 'react';
+import { connect } from 'react-redux';
+import * as actionCreators from '../state/action-creators';
 
-export function Form(props) {
+function Form(props) {
+  console.log(props)
 
-  const onChange = evt => {
+  const onChange = (evt) => {
+    props.inputChange(evt.target.name, evt.target.value)
+  };
+
+  const onSubmit = (evt) => {
+    evt.preventDefault();
+    props.postQuiz(props.form)
+
+    // Display success message and reset the form
 
   }
 
-  const onSubmit = evt => {
 
-  }
+
+
+  // Your submit logic here
+
+
+  // Check if any input has a value less than two characters
+
+
+
 
   return (
     <form id="form" onSubmit={onSubmit}>
       <h2>Create New Quiz</h2>
-      <input maxLength={50} onChange={onChange} id="newQuestion" placeholder="Enter question" />
-      <input maxLength={50} onChange={onChange} id="newTrueAnswer" placeholder="Enter true answer" />
-      <input maxLength={50} onChange={onChange} id="newFalseAnswer" placeholder="Enter false answer" />
-      <button id="submitNewQuizBtn">Submit new quiz</button>
+      <input
+        value={props.form.newQuestion}
+        id="newQuestion"
+        maxLength={50}
+        onChange={onChange}
+        name="newQuestion"
+        placeholder="Enter question"
+      />
+      <input
+        value={props.form.newTrueAnswer}
+        id="newTrueAnswer"
+        maxLength={50}
+        onChange={onChange}
+        name="newTrueAnswer"
+        placeholder="Enter true answer"
+      />
+      <input
+        value={props.form.newFalseAnswer}
+        id="newFalseAnswer"
+        maxLength={50}
+        onChange={onChange}
+        name="newFalseAnswer"
+        placeholder="Enter false answer"
+      />
+      <button disabled={props.form.newQuestion.trim().length < 1 || props.form.newTrueAnswer.trim().length < 1 || props.form.newFalseAnswer.trim().length < 1} id="submitNewQuizBtn" >
+        Submit new quiz
+      </button>
     </form>
-  )
-}
+  );
+};
 
-export default connect(st => st, actionCreators)(Form)
+
+
+export default connect((state) => state, actionCreators)(Form);
